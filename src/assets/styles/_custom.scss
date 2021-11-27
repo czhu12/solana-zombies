@@ -1,0 +1,21 @@
+.wrapper {
+  margin-top: 50px;
+  height: calc(100vh - 50px);
+  display: flex;
+  flex-direction: column;
+}
+
+#content {
+  flex-grow: 1;
+}
+
+.ace_editor {
+  width: inherit !important;
+}
+.code-input {
+  height: 100%;
+}
+
+footer {
+  height: 50px;
+}
