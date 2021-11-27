@@ -29,7 +29,6 @@ function Editor({ chapter }) {
         newCodeFiles[baseName] = response.data;
       });
       setCodeFiles(newCodeFiles);
-      console.log(newCodeFiles)
       const files = Object.keys(codeFiles);
       const activeFile = files[0]
       setKey(activeFile);
