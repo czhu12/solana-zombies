@@ -13,8 +13,6 @@ import Editor from './Editor';
 function App() {
   const [config, setConfig] = useState(null);
   const [currentChapter, setCurrentChapter] = useState(null);
-  const [remoteMarkdownUrl, setRemoteMarkdownUrl] = useState(null);
-  const [urls, setUrls] = useState([]);
   const [checkAnswer, setCheckAnswer] = useState(false);
   const [showingAnswer, setShowAnswer] = useState(false);
 
@@ -30,22 +28,11 @@ function App() {
     })
   }, [])
 
-  useEffect(() => {
-    if (currentChapter !== null) {
-      const chapter = config.chapters[currentChapter];
-      const contentUrl = chapter.content;
-      setRemoteMarkdownUrl(contentUrl);
-      const beforeCodeUrls = chapter.before_code;
-      setUrls(beforeCodeUrls)
-      const afterCodeUrls = chapter.after_code;
-    }
-  }, [currentChapter])
-
   const goBack = () => {
     setCurrentChapter(Math.max(currentChapter - 1, 0))
   }
   const goForward = () => {
-    setCurrentChapter(currentChapter + 1)
+    setCurrentChapter(Math.min(config.chapters.length - 1, currentChapter + 1));
   }
 
   let chapter;
@@ -54,20 +41,22 @@ function App() {
   } else {
     chapter = {}
   }
-  console.log(chapter);
+  const isComplete = config?.chapters?.length - 1 === currentChapter;
   return (
     <div className="wrapper">
       <div id="content">
-        <Row>
-          <Col sm={5}>
-            <div className="px-5">
-              <RemoteMarkdown url={remoteMarkdownUrl} />
-            </div>
-          </Col>
-          <Col sm={7}>
-            <Editor urls={urls} />
-          </Col>
-        </Row>
+        {chapter && (
+          <Row>
+            <Col sm={5}>
+              <div className="px-5">
+                <RemoteMarkdown chapter={chapter} />
+              </div>
+            </Col>
+            <Col sm={7}>
+              <Editor chapter={chapter}  />
+            </Col>
+          </Row>
+        )}
       </div>
       <footer>
         <Container fluid>
@@ -112,13 +101,16 @@ function App() {
             </Col>
             <Col>
               <div className="text-right">
-                <Button className="mr-5" onClick={goBack}>
+                <Button onClick={goBack}>
                   <Icon path={mdiChevronLeft}
                     title="Back"
                     size={1} />
                   Back
                 </Button>
-                <Button onClick={goForward}>
+                <span className="h4 mx-4">
+                  {currentChapter + 1}/{config?.chapters.length}
+                </span>
+                <Button disabled={isComplete} variant={isComplete ? "outline-secondary" : "primary"} onClick={goForward}>
                   Next
                   <Icon path={mdiChevronRight}
                     title="Next"

@@ -7,16 +7,18 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-rust";
 import "ace-builds/src-noconflict/theme-chaos";
 
-function Editor({ urls }) {
+function Editor({ chapter }) {
   const [codeFiles, setCodeFiles] = useState({});
   const [key, setKey] = useState('home');
 
   useEffect(() => {
-    if (!urls) {
+    if (!chapter) {
       return;
     }
+    const urls = chapter.before_code;
+    if (!chapter.before_code) return;
     const requests = urls.map((url) => {
-      return axios.get(url);
+      return axios.get('/' + url);
     });
     Promise.all(requests).then((responses) => {
       const newCodeFiles = {};
@@ -27,13 +29,14 @@ function Editor({ urls }) {
         newCodeFiles[baseName] = response.data;
       });
       setCodeFiles(newCodeFiles);
+      console.log(newCodeFiles)
       const files = Object.keys(codeFiles);
-      const activeFile = files[files.length - 1]
+      const activeFile = files[0]
       setKey(activeFile);
     }).catch((err) => {
       console.log(err)
     });
-  }, [urls]);
+  }, [chapter]);
 
   return (
     <Tabs
