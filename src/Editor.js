@@ -1,26 +1,22 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
-import { Controlled as CodeMirror } from 'react-codemirror2'
-import { render } from "react-dom";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-rust";
 import "ace-builds/src-noconflict/theme-chaos";
+import AppContext from './context';
 
 function Editor({ chapter }) {
-  const [codeFiles, setCodeFiles] = useState({});
   const [key, setKey] = useState('home');
 
-  useEffect(() => {
-    if (!chapter) {
-      return;
-    }
-    const urls = chapter.before_code;
-    if (!chapter.before_code) return;
+  const { codeFiles, setCodeFiles, targetCodeFiles, setTargetCodeFiles }= useContext(AppContext);
+
+  const getAllCodeUrls = (urls) => {
     const requests = urls.map((url) => {
       return axios.get('/' + url);
     });
-    Promise.all(requests).then((responses) => {
+
+    return Promise.all(requests).then((responses) => {
       const newCodeFiles = {};
       responses.forEach(response => {
         const file = response.request.responseURL;
@@ -28,6 +24,14 @@ function Editor({ chapter }) {
         const baseName = pieces[pieces.length - 1];
         newCodeFiles[baseName] = response.data;
       });
+      return newCodeFiles;
+    });
+  }
+
+  const downloadStartingCode = () => {
+    if (!chapter.before_code) return;
+
+    getAllCodeUrls(chapter.before_code).then((newCodeFiles) => {
       setCodeFiles(newCodeFiles);
       const files = Object.keys(codeFiles);
       const activeFile = files[0]
@@ -35,33 +39,54 @@ function Editor({ chapter }) {
     }).catch((err) => {
       console.log(err)
     });
+  }
+
+  const downloadTargetCode = () => {
+    if (!chapter.after_code) return;
+
+    getAllCodeUrls(chapter.after_code).then((newCodeFiles) => {
+      setTargetCodeFiles(newCodeFiles);
+    }).catch((err) => {
+      console.log(err)
+    });
+  }
+
+  useEffect(() => {
+    if (!chapter) {
+      return;
+    }
+    downloadStartingCode();
+    downloadTargetCode();
   }, [chapter]);
 
   return (
-    <Tabs
-      activeKey={key}
-      onSelect={(k) => setKey(k)}
-    >
-      {Object.keys(codeFiles).map((name) => {
-        const code = codeFiles[name];
-        return (
-          <Tab key={name} eventKey={name} title={name}>
-            <AceEditor
-              mode="rust"
-              theme="chaos"
-              value={code}
-              onChange={(v) => {
-                const newCodeFiles = { ...codeFiles }
-                newCodeFiles[name] = v;
-                setCodeFiles(newCodeFiles)
-              }}
-              name={name}
-              editorProps={{ $blockScrolling: true }}
-            />
-          </Tab>
-        );
-      })}
-    </Tabs>
+    <div id="editor">
+      <Tabs
+        activeKey={key}
+        onSelect={(k) => setKey(k)}
+      >
+        {Object.keys(codeFiles).map((name) => {
+          const code = codeFiles[name];
+          return (
+            <Tab key={name} eventKey={name} title={name}>
+              <AceEditor
+                showPrintMargin={false}
+                mode="rust"
+                theme="chaos"
+                value={code}
+                onChange={(v) => {
+                  const newCodeFiles = { ...codeFiles }
+                  newCodeFiles[name] = v;
+                  setCodeFiles(newCodeFiles)
+                }}
+                name={name}
+                editorProps={{ $blockScrolling: true }}
+              />
+            </Tab>
+          );
+        })}
+      </Tabs>
+    </div>
   );
 }
 

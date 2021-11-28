@@ -6,15 +6,47 @@ import React, { useEffect, useState } from "react";
 import { mdiChevronLeft, mdiChevronRight, mdiCheck, mdiLightbulb, mdiClose } from '@mdi/js';
 import Icon from '@mdi/react'
 import { Button, Row, Col, Container } from 'react-bootstrap'
+import { useContext } from 'react';
+import { checkAnswer } from './utils/checker';
+import AppContext from './context';
+import Swal from 'sweetalert2'
+
 
 function Footer({ currentChapter, setCurrentChapter, config }) {
-  const [checkAnswer, setCheckAnswer] = useState(false);
+  const [checkingAnswer, setCheckAnswer] = useState(false);
   const [showingAnswer, setShowAnswer] = useState(false);
+  const { codeFiles, targetCodeFiles } = useContext(AppContext);
+
   const goBack = () => {
     setCurrentChapter(Math.max(currentChapter - 1, 0))
   }
   const goForward = () => {
     setCurrentChapter(Math.min(config.chapters.length - 1, currentChapter + 1));
+  }
+  const performCheckAnswer = () => {
+    const isCorrect = checkAnswer(codeFiles, targetCodeFiles);
+    if (isCorrect) {
+      Swal.fire({
+        title: 'Correct!',
+        icon: 'success',
+        showCancelButton: true,
+        cancelButtonText: 'Hide',
+        confirmButtonText: 'Next Page',
+        confirmButtonColor: '#3085d6',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          goForward();
+        }
+      })
+    } else {
+      setCheckAnswer(true);
+      Swal.fire({
+        title: 'Error!',
+        text: 'Do you want to continue',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+    }
   }
 
   const isComplete = config?.chapters?.length - 1 === currentChapter;
@@ -33,17 +65,15 @@ function Footer({ currentChapter, setCurrentChapter, config }) {
           </Col>
           <Col>
             <div className="text-center">
-              {!checkAnswer && (
-                <Button variant="outline-primary" onClick={() => {
-                  setCheckAnswer(true);
-                }}>
+              {!checkingAnswer && (
+                <Button variant="outline-primary" onClick={performCheckAnswer}>
                   <Icon path={mdiCheck}
                     title="Check Answer"
                     size={1} />
                   Check Answer
                 </Button>
               )}
-              {checkAnswer && (
+              {checkingAnswer && (
                 <>
                   <Button className="mr-2" variant="outline-success" onClick={() => {
                     setShowAnswer(true);
@@ -54,9 +84,10 @@ function Footer({ currentChapter, setCurrentChapter, config }) {
                     Show me the answer
                   </Button>
                   <Button variant="outline-danger" onClick={() => {
-                    setShowAnswer(true);
+                    performCheckAnswer();
                   }}>
-                    <Icon path={mdiClose}
+                    <Icon
+                      path={mdiClose}
                       title="Try Again"
                       size={1} />
                     Try again

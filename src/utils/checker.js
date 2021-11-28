@@ -1,6 +1,12 @@
 const Diff = require('diff');
 
 export const isCorrect = (fileA, fileB) => {
+  if (!fileA && !fileB) {
+    return true
+  }
+  if ((!fileA && fileB) || (fileA && !fileB)) {
+    return false;
+  }
   fileA = fileA.replace(/(\r\n|\n|\r|\s\s+)/gm, "");
   fileB = fileB.replace(/(\r\n|\n|\r|\s\s+)/gm, "");
   const output = Diff.diffTrimmedLines(fileA, fileB, {newlineIsToken: false, ignoreWhitespace: true})

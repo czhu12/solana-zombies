@@ -10,9 +10,11 @@ function RemoteMarkdown({ chapter }) {
         setChildren(response.data);
       })
     }
-  }, [chapter])
+  }, [chapter]);
   return (
-    <ReactMarkdown children={children} />
+    <div id="lesson-content">
+      <ReactMarkdown children={children} />
+    </div>
   );
 }
 
