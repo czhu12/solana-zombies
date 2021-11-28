@@ -3,7 +3,7 @@ import 'codemirror/theme/3024-night.css';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/mode/rust/rust';
 import React, { useEffect, useState } from "react";
-import { mdiChevronLeft, mdiChevronRight, mdiCheck, mdiLightbulb, mdiClose } from '@mdi/js';
+import { mdiMenu, mdiChevronLeft, mdiChevronRight, mdiCheck, mdiLightbulb, mdiClose } from '@mdi/js';
 import Icon from '@mdi/react'
 import { Button, Row, Col, Container } from 'react-bootstrap'
 import { useContext } from 'react';
@@ -12,7 +12,7 @@ import AppContext from './context';
 import Swal from 'sweetalert2'
 
 
-function Footer({ currentChapter, setCurrentChapter, config }) {
+function Footer({ currentChapter, setCurrentChapter, config, showChaptersSidebar }) {
   const [checkingAnswer, setCheckAnswer] = useState(false);
   const [showingAnswer, setShowAnswer] = useState(false);
   const { codeFiles, targetCodeFiles } = useContext(AppContext);
@@ -57,11 +57,18 @@ function Footer({ currentChapter, setCurrentChapter, config }) {
     chapter = {}
   }
   return (
-    <footer>
+    <footer className="shadow-lg">
       <Container fluid>
         <Row>
-          <Col className="align-text-vertical-center">
-            <div className="h4">{chapter.title}</div>
+          <Col style={{display: 'flex', alignItems: 'flex-end'}}>
+            <div className="h4 pointer" onClick={() => {
+              showChaptersSidebar();
+            }}>
+              <Icon className="mr-2" path={mdiMenu}
+                title="Menu"
+                size={1} />
+              {chapter.title}
+              </div>
           </Col>
           <Col>
             <div className="text-center">

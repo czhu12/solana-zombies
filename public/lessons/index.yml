@@ -1,12 +1,6 @@
 chapters:
   - title: Chapter 1
     content: lessons/lesson1.md
-    before_code:
-    - lessons/lesson1/main.rs
-    - lessons/lesson1/cargo.toml
-    after_code:
-    - lessons/lesson1/main.rs
-    - lessons/lesson1/cargo.toml
   - title: Chapter 2
     content: lessons/lesson2.md
     before_code:

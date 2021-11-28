@@ -60,7 +60,7 @@ function Editor({ chapter }) {
   }, [chapter]);
 
   return (
-    <div id="editor">
+    <div id="editor" className="mt-2">
       <Tabs
         activeKey={key}
         onSelect={(k) => setKey(k)}

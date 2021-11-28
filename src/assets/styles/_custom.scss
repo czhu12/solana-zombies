@@ -1,6 +1,6 @@
 .wrapper {
-  margin-top: 90px;
-  height: calc(100vh - 90px);
+  margin-top: 70px;
+  height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
 }
@@ -29,4 +29,16 @@ footer {
 #lesson-content {
   height: calc(100vh - 60px - 90px);
   overflow-y: auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  box-shadow:0 0 0 10000px rgba(0,0,0,.50);
+  height: 100%;
+  width: 300px;
+  overflow-y: auto;                   
 }
