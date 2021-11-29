@@ -4,24 +4,8 @@ chapters:
   - title: Chapter 2
     content: lessons/lesson2.md
     before_code:
-    - lessons/lesson2/main.rs
-    - lessons/lesson2/cargo.toml
+    - lessons/lesson2/lib.rs
     after_code:
-    - lessons/lesson2/main.rs
-    - lessons/lesson2/cargo.toml
+    - lessons/lesson2/lib.rs
   - title: Chapter 3
     content: lessons/lesson3.md
-    before_code:
-    - lessons/lesson1/main.rs
-    - lessons/lesson1/cargo.toml
-    after_code:
-    - lessons/lesson1/main.rs
-  - title: Chapter 4
-    content: lessons/lesson4.md
-    before_code:
-    - lessons/lesson1/main.rs
-    - lessons/lesson1/cargo.toml
-    after_code:
-    - lessons/lesson1/main.rs
-    - lessons/lesson1/cargo.toml
-    - lessons/lesson1/cargo.toml

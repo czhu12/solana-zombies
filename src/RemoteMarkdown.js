@@ -12,7 +12,7 @@ function RemoteMarkdown({ chapter }) {
     }
   }, [chapter]);
   return (
-    <div id="lesson-content">
+    <div id="lesson-content" className="mt-2">
       <ReactMarkdown children={children} />
     </div>
   );
