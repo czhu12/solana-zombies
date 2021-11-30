@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 function RemoteMarkdown({ chapter }) {
   const [children, setChildren] = useState(null);
   useEffect(() => {
-    if (chapter) {
+    if (chapter?.content) {
       axios.get('/' + chapter.content).then(response => {
         setChildren(response.data);
       })
