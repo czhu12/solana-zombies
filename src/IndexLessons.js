@@ -12,7 +12,7 @@ function IndexLessons() {
     })
   }, [])
   return (
-    <Container>
+    <Container className="my-4">
       {lessons && (
         <Row>
           {lessons.books.map((book) => {
