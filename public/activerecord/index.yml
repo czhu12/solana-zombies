@@ -1,0 +1,11 @@
+chapters:
+  - title: Chapter 1
+    content: activerecord/lesson1.md
+  - title: Chapter 2
+    content: activerecord/lesson2.md
+    before_code:
+    - activerecord/lesson2/lib.rs
+    after_code:
+    - activerecord/lesson2/lib.rs
+  - title: Chapter 3
+    content: activerecord/lesson3.md

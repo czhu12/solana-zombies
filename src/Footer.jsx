@@ -60,7 +60,7 @@ function Footer({ currentChapter, setCurrentChapter, config, showChaptersSidebar
     <footer className="shadow-lg">
       <Container fluid>
         <Row>
-          <Col style={{display: 'flex', alignItems: 'flex-end'}}>
+          <Col style={{display: 'flex', alignItems: 'flex-end'}} className="d-none d-md-block">
             <div className="h4 pointer" onClick={() => {
               showChaptersSidebar();
             }}>
@@ -70,7 +70,7 @@ function Footer({ currentChapter, setCurrentChapter, config, showChaptersSidebar
               {chapter.title}
               </div>
           </Col>
-          <Col>
+          <Col className="d-none d-md-block">
             <div className="text-center">
               {!checkingAnswer && (
                 <Button variant="outline-primary" onClick={performCheckAnswer}>
@@ -105,7 +105,7 @@ function Footer({ currentChapter, setCurrentChapter, config, showChaptersSidebar
             </div>
           </Col>
           <Col>
-            <div className="text-right">
+            <div className="text-center text-md-right mb-5 mb-md-0">
               <Button onClick={goBack}>
                 <Icon path={mdiChevronLeft}
                   title="Back"

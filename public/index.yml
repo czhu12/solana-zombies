@@ -1,0 +1,16 @@
+books:
+  - name: Models
+    description: Models are how you save data in your app.
+    source: activerecord/index.yml
+  - name: Controllers
+    description: Controllers is where you implement the features of your app.
+    source: controllers/index.yml
+  - name: Views
+    description: Views are where you design your app.
+    source: views/index.yml
+  - name: Routing
+    description: Routing is how you can have more than one page in your App
+    source: routing/index.yml
+  - name: Model View Controller
+    description: Putting it all together...
+    source: mvc/index.yml
