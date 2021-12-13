@@ -105,7 +105,7 @@ function Footer({ currentChapter, setCurrentChapter, config, showChaptersSidebar
             </div>
           </Col>
           <Col>
-            <div className="text-center text-md-right mb-5 mb-md-0">
+            <div className="text-center text-md-right my-5 my-md-0">
               <Button onClick={goBack}>
                 <Icon path={mdiChevronLeft}
                   title="Back"
